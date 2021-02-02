@@ -10,9 +10,10 @@ app.set('views', __dirname + '/views');
 
 // router
 const indexRouter = require('./routes/index.router');
-
+const autosRouter = require('./routes/autos.router');
 // routes
 app.use('/', indexRouter);
+app.use('/autos', autosRouter);
 
 // static files
 app.use(express.static(__dirname + '/public'));
