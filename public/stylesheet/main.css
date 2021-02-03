@@ -1,3 +1,20 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
 body {
     background-color: antiquewhite;
+}
+
+main .container {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer {
+    height: 15vh;
+    background-color: burlywood;
 }
