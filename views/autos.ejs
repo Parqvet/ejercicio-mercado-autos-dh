@@ -8,7 +8,20 @@
 
     <main>
         <div class="container mt-5">
-            <h2>vista de autos</h2>
+            <h2>Listado de Autos</h2>
+            <div class="row">
+                <% autosDB.forEach(auto => { %>
+                    <div class="col-12 col-md-6 col-lg-3 my-3">
+                        <div class="card" style="width: 98%;">
+                            <img src="/images/<%= auto.img %>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title"><%= auto.marca %></h5>
+                              <a href="#" class="btn btn-primary">Ver más</a>
+                            </div>
+                          </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
     </main>
 
