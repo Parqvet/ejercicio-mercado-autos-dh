@@ -1,11 +1,10 @@
 const { Router } = require('express');
 const router = Router();
 
-const autosController = require('../controllers/autos.controller');
+const { renderIndex, renderShowAuto, searchCar } = require('../controllers/autos.controller');
 
-router.get('/', autosController.renderIndex);
-
-// llegar a esta ruta con un parametro
-router.get('/show/:id', autosController.show);
+router.get('/', renderIndex);
+router.get('/show/:id', renderShowAuto);
+router.get('/search', searchCar);
 
 module.exports = router;
