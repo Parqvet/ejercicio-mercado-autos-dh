@@ -11,9 +11,12 @@ app.set('views', __dirname + '/views');
 // router
 const indexRouter = require('./routes/index.router');
 const autosRouter = require('./routes/autos.router');
+const adminRouter = require('./routes/admin.router');
+
 // routes
 app.use('/', indexRouter);
 app.use('/autos', autosRouter);
+app.use('/admin', adminRouter);
 
 // static files
 app.use(express.static(__dirname + '/public'));
