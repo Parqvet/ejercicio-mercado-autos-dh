@@ -7,6 +7,8 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // middlewares
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
 // router
 const indexRouter = require('./routes/index.router');
