@@ -1,4 +1,6 @@
 const express = require('express');
+const methodOverride = require('method-override');
+
 const app = express();
 
 // settings
@@ -9,6 +11,8 @@ app.set('views', __dirname + '/views');
 // middlewares
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+// agregar method-override
+app.use(methodOverride('_method'));
 
 // router
 const indexRouter = require('./routes/index.router');

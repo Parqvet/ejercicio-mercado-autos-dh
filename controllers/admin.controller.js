@@ -28,7 +28,7 @@ module.exports = {
         const { marca, modelo, color, anio, img } = req.body;
         
         const auto = {
-            id: lastID + 1,
+            id: Number(lastID + 1),
             marca,
             modelo,
             color,
@@ -44,9 +44,28 @@ module.exports = {
     },
     carsEdit: (req, res) => {
         
+        const auto = autos.find(auto => auto.id === +req.params.id);
+
+        res.render('admin/carEdit', {
+            auto
+        });
     },
     carsUpdate: (req, res) => {
+        const { marca, modelo, color, anio, img } = req.body;
         
+        autos.forEach(auto => {
+            if(auto.id === +req.params.id) {
+                auto.id = Number(req.params.id);
+                auto.marca = marca;
+                auto.modelo = modelo;
+                auto.color = color;
+                auto.anio = anio;
+                auto.img = img;
+            }
+        })
+
+        fs.writeFileSync('./data/autos.json', JSON.stringify(autos), 'utf-8');
+        res.redirect('/admin/autos/list');
     },
     carsDelete: (req, res) => {
         
