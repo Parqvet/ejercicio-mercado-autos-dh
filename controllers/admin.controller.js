@@ -68,6 +68,14 @@ module.exports = {
         res.redirect('/admin/autos/list');
     },
     carsDelete: (req, res) => {
-        
+        autos.forEach(auto => {
+            if (auto.id === +req.params.id) {
+                let aEliminar = autos.indexOf(auto);
+                autos.splice(aEliminar, 1);
+            }
+        })
+
+        fs.writeFileSync('./data/autos.json', JSON.stringify(autos), 'utf-8');
+        res.redirect('/admin/autos/list');
     }
 }
