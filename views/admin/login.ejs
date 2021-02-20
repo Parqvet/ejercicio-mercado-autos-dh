@@ -21,6 +21,11 @@
                             <label for="floatingPassword">Password</label>
                           </div>
                           <button type="submit" class="btn btn-primary mt-3">Ingresar</button>
+                          <% if (typeof error != 'undefined') { %>
+                            <div class="alert alert-danger mt-3">
+                              <span><%= error %></span>
+                            </div>
+                          <% } %>
                     </div>
                 </div>
             </div>

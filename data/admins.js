@@ -7,6 +7,6 @@ module.exports = {
         return JSON.parse(fs.readFileSync(admins_db, 'utf-8'));
     },
     setAdmins: (data) => {
-        fs.writeFileSync(admins_db, JSON.stringify(data), 'utf-8');
+        fs.writeFileSync(admins_db, JSON.stringify(data, null, 2), 'utf-8');
     }
 }

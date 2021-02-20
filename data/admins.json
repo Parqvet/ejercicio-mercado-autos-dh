@@ -1,1 +1,7 @@
-[{"id":1,"username":"Marce","pass":""}]
+[
+  {
+    "id": 1,
+    "username": "parqvet",
+    "pass": "$2b$12$zieuw1wbuIxjr/9d/Rr.6edIMtpQgLIUCQnmLwmsGJVkUw2lIRDJu"
+  }
+]

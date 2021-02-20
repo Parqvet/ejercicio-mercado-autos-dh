@@ -1,4 +1,5 @@
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const { getAutos, setAutos } = require(path.join('..', 'data', 'autos'));
 const { getAdmins, setAdmins } = require(path.join('..', 'data', 'admins'));
@@ -23,10 +24,13 @@ module.exports = {
             }
         });
 
+        // para hashear la pass
+        let passHash = bcrypt.hashSync(pass.trim(), 12);
+
         const newAdmin = {
             id: +(lastID + 1),
-            username,
-            pass
+            username: username.trim(),
+            pass: passHash
         }
 
         admins.push(newAdmin);
@@ -35,7 +39,25 @@ module.exports = {
         res.redirect('/admin/login');
     },
     processLogin: (req, res) => {
-        res.send(req.body);
+        const { username, pass } = req.body;
+
+        // buscar si existe el usuario
+        let result = admins.find(admin => admin.username === username.trim());
+
+        if(result) {
+            // se comparan contraseñas
+            if(bcrypt.compareSync(pass.trim(), result.pass)) {
+                return res.redirect('/admin');
+            } else {
+                res.render('admin/login', {
+                    error: 'Credenciales inválidas'
+                });
+            } 
+        } else {
+            res.render('admin/login', {
+                error: 'Credenciales inválidas'
+            })
+        }
     },
     renderAdmin: (req, res) => {
         res.render('admin/index');
