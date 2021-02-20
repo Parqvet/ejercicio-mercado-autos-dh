@@ -1,10 +1,18 @@
 const { Router } = require('express');
 const router = Router();
 
-const { renderAdmin, renderCarsList, carsCreate, carsStore, carsEdit, carsUpdate, carsDelete } = require('../controllers/admin.controller');
+const { renderAdmin, renderCarsList, carsCreate, carsStore, carsEdit, carsUpdate, carsDelete, renderRegister, processRegister, renderLogin, processLogin } = require('../controllers/admin.controller');
 
 // renderizas index del admin
 router.get('/', renderAdmin);
+
+// renderizar y procesar el registro
+router.get('/register', renderRegister);
+router.post('/register', processRegister)
+
+// renderizar y procesar el login
+router.get('/login', renderLogin);
+router.post('/login', processLogin);
 
 // listar autos
 router.get('/autos/list', renderCarsList);

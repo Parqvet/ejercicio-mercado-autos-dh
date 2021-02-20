@@ -1,11 +1,42 @@
-// db
-const autos = require('../data/autos');
+const path = require('path');
 
-const fs = require('fs');
-const { json } = require('express');
+const { getAutos, setAutos } = require(path.join('..', 'data', 'autos'));
+const { getAdmins, setAdmins } = require(path.join('..', 'data', 'admins'));
 
+const autos = getAutos();
+const admins = getAdmins();
 
 module.exports = {
+    renderRegister: (req, res) => {
+        res.render('admin/register');
+    },
+    renderLogin: (req, res) => {
+        res.render('admin/login');
+    },
+    processRegister: (req, res) => {
+        const { username, pass } = req.body;
+
+        let lastID = 0;
+        admins.forEach(admin => {
+            if (admin.id > lastID) {
+                lastID = admin.id;
+            }
+        });
+
+        const newAdmin = {
+            id: +(lastID + 1),
+            username,
+            pass
+        }
+
+        admins.push(newAdmin);
+        setAdmins(admins);
+
+        res.redirect('/admin/login');
+    },
+    processLogin: (req, res) => {
+        res.send(req.body);
+    },
     renderAdmin: (req, res) => {
         res.render('admin/index');
     },
@@ -38,7 +69,7 @@ module.exports = {
 
         autos.push(auto);
 
-        fs.writeFileSync('./data/autos.json', JSON.stringify(autos), 'utf-8');
+        setAutos(autos);
         res.redirect('/admin/autos/list');
 
     },
@@ -64,13 +95,15 @@ module.exports = {
             }
         })
 
-        fs.writeFileSync('./data/autos.json', JSON.stringify(autos), 'utf-8');
+        setAutos(autos);
         res.redirect('/admin/autos/list');
     },
     carsDelete: (req, res) => {
         autos.forEach(auto => {
             if (auto.id === +req.params.id) {
+                // con indexOf se busca en que indice esta el auto
                 let aEliminar = autos.indexOf(auto);
+                // con splice se elimina ese auto
                 autos.splice(aEliminar, 1);
             }
         })
