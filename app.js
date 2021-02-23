@@ -18,11 +18,13 @@ app.use(methodOverride('_method'));
 const indexRouter = require('./routes/index.router');
 const autosRouter = require('./routes/autos.router');
 const adminRouter = require('./routes/admin.router');
+const usersRouter = require('./routes/users.router');
 
 // routes
 app.use('/', indexRouter);
 app.use('/autos', autosRouter);
 app.use('/admin', adminRouter);
+app.use('/admin', usersRouter);
 
 // static files
 app.use(express.static(__dirname + '/public'));

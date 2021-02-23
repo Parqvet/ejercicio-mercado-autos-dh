@@ -4,7 +4,7 @@
 <body>
     <%- include('./partials/header')  %> 
     <main class="container">
-        <form action="/admin/autos/store" method="POST">
+        <form action="/admin/autos/store" method="POST" enctype="multipart/form-data">
           <h3>Agregar</h3>
           <hr>
           <div class="row">
@@ -34,7 +34,7 @@
             </div>
             <div class="col-lg-6">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="imagen" placeholder="imagen" name="img">
+                <input type="file" class="form-control" id="imagen" placeholder="imagen" name="img">
                 <label for="imagen">Imagen</label>
               </div>
             </div>

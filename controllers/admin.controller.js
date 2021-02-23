@@ -1,5 +1,6 @@
 const path = require('path');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 
 const { getAutos, setAutos } = require(path.join('..', 'data', 'autos'));
 const { getAdmins, setAdmins } = require(path.join('..', 'data', 'admins'));
@@ -8,57 +9,6 @@ const autos = getAutos();
 const admins = getAdmins();
 
 module.exports = {
-    renderRegister: (req, res) => {
-        res.render('admin/register');
-    },
-    renderLogin: (req, res) => {
-        res.render('admin/login');
-    },
-    processRegister: (req, res) => {
-        const { username, pass } = req.body;
-
-        let lastID = 0;
-        admins.forEach(admin => {
-            if (admin.id > lastID) {
-                lastID = admin.id;
-            }
-        });
-
-        // para hashear la pass
-        let passHash = bcrypt.hashSync(pass.trim(), 12);
-
-        const newAdmin = {
-            id: +(lastID + 1),
-            username: username.trim(),
-            pass: passHash
-        }
-
-        admins.push(newAdmin);
-        setAdmins(admins);
-
-        res.redirect('/admin/login');
-    },
-    processLogin: (req, res) => {
-        const { username, pass } = req.body;
-
-        // buscar si existe el usuario
-        let result = admins.find(admin => admin.username === username.trim());
-
-        if(result) {
-            // se comparan contraseñas
-            if(bcrypt.compareSync(pass.trim(), result.pass)) {
-                return res.redirect('/admin');
-            } else {
-                res.render('admin/login', {
-                    error: 'Credenciales inválidas'
-                });
-            } 
-        } else {
-            res.render('admin/login', {
-                error: 'Credenciales inválidas'
-            })
-        }
-    },
     renderAdmin: (req, res) => {
         res.render('admin/index');
     },
@@ -70,7 +20,8 @@ module.exports = {
     carsCreate: (req, res) => {
         res.render('admin/carsCreate');
     },
-    carsStore: (req, res) => {
+    carsStore: (req, res, next) => {
+
         let lastID = 1;
         autos.forEach(auto => {
             if (auto.id > lastID) {
@@ -86,7 +37,7 @@ module.exports = {
             modelo,
             color,
             anio,
-            img
+            img: req.files[0].filename
         }
 
         autos.push(auto);
@@ -123,6 +74,11 @@ module.exports = {
     carsDelete: (req, res) => {
         autos.forEach(auto => {
             if (auto.id === +req.params.id) {
+
+                if(fs.existsSync(path.join('public', 'images', 'autos', auto.img))) {
+                    fs.unlinkSync(path.join('public', 'images', 'autos', auto.img))
+                }
+
                 // con indexOf se busca en que indice esta el auto
                 let aEliminar = autos.indexOf(auto);
                 // con splice se elimina ese auto
