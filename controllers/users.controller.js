@@ -2,6 +2,9 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 
+// requerir express-validator
+const { check, validationResult, body } = require('express-validator');
+
 const { getAdmins, setAdmins } = require(path.join('..', 'data', 'admins'));
 const admins = getAdmins();
 
@@ -13,43 +16,40 @@ module.exports = {
         res.render('admin/login');
     },
     processRegister: (req, res) => {
-        const { username, pass } = req.body;
-
-        // verificar si se completan los campos
-        if(!username || !pass) {
-            return res.redirect('/admin/register');
-        }
-
-        // buscar si ya existe el usuario
-        let result = admins.find(admin => admin.username === username.trim());
-
-        // verificar si existe el usuario
-        if(result) {
+        // traer validationResult
+        const errores = validationResult(req);
+        // 
+        if(!errores.isEmpty()) {
             return res.render('admin/register', {
-                error: 'El usuario ya está registrado'
+                errores: errores.mapped(),
+                old: req.body
+            })
+        } else {
+            const { username, pass } = req.body;
+    
+            let lastID = 0;
+            admins.forEach(admin => {
+                if (admin.id > lastID) {
+                    lastID = admin.id;
+                }
             });
-        }
-
-        let lastID = 0;
-        admins.forEach(admin => {
-            if (admin.id > lastID) {
-                lastID = admin.id;
+    
+            // para hashear la pass
+            let passHash = bcrypt.hashSync(pass.trim(), 12);
+    
+            const newAdmin = {
+                id: +(lastID + 1),
+                username: username.trim(),
+                pass: passHash
             }
-        });
+    
+            admins.push(newAdmin);
+            setAdmins(admins);
+    
+            res.redirect('/admin/login');
 
-        // para hashear la pass
-        let passHash = bcrypt.hashSync(pass.trim(), 12);
-
-        const newAdmin = {
-            id: +(lastID + 1),
-            username: username.trim(),
-            pass: passHash
         }
 
-        admins.push(newAdmin);
-        setAdmins(admins);
-
-        res.redirect('/admin/login');
     },
     processLogin: (req, res) => {
         const { username, pass } = req.body;

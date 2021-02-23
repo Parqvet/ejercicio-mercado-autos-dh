@@ -1,14 +1,12 @@
 const { Router } = require('express');
 const router = Router();
 
-// requerir multer
-const upload = require('../middlewares/multerAutos');
-
 const { renderRegister, processRegister, renderLogin, processLogin } = require('../controllers/users.controller');
+const registerAdminValidator = require('../validations/registerAdminValidator');
 
 // renderizar y procesar el registro
 router.get('/register', renderRegister);
-router.post('/register', processRegister)
+router.post('/register', registerAdminValidator, processRegister);
 
 // renderizar y procesar el login
 router.get('/login', renderLogin);

@@ -13,12 +13,14 @@
                     <div class="col-12 col-md-6 col-lg-4 mt-5">
                         <h2 class="my-3">Register</h2>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Nombre de Usuario" name="username" value="<%= (typeof old != 'undefined' && old.username) ? old.username : "" %>">
                             <label for="floatingInput">Username</label>
+                            <span class="text-danger"><%= (typeof errores != 'undefined' && errores.username) ? errores.username.msg : "" %></span>
                           </div>
                           <div class="form-floating">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="pass">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Contraseña" name="pass">
                             <label for="floatingPassword">Password</label>
+                            <span class="text-danger"><%= (typeof errores != 'undefined' && errores.pass) ? errores.pass.msg : "" %></span>
                           </div>
                           <button type="submit" class="btn btn-primary mt-3">Registrarme</button>
                           <p class="mt-3">¿Estás registrado? <a href="/admin/login">Iniciar sesión</a></p>
@@ -29,6 +31,7 @@
                               </div>
                             <% } %>
                           </div>
+
                     </div>
                 </div>
             </div>
