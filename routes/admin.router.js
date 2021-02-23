@@ -4,10 +4,14 @@ const router = Router();
 // requerir multer
 const upload = require('../middlewares/multerAutos');
 
-const { renderAdmin, renderCarsList, carsCreate, carsStore, carsEdit, carsUpdate, carsDelete } = require('../controllers/admin.controller');
+const { renderAdmin, renderUsersList, renderCarsList, carsCreate, carsStore, carsEdit, carsUpdate, carsDelete, renderProfileAdmin } = require('../controllers/admin.controller');
 
 // renderizas index del admin
 router.get('/', renderAdmin);
+
+// renderizar lista de admins y profile
+router.get('/list', renderUsersList);
+router.get('/profile/:id', renderProfileAdmin);
 
 // listar autos
 router.get('/autos/list', renderCarsList);

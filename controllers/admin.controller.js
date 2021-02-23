@@ -9,6 +9,18 @@ const autos = getAutos();
 const admins = getAdmins();
 
 module.exports = {
+    renderUsersList: (req, res) => {
+        res.render('admin/adminList', {
+            admins
+        })
+    },
+    renderProfileAdmin: (req, res) => {
+        const admin = admins.find(admin => admin.id === +req.params.id);
+
+        res.render('admin/profileAdmin', {
+            admin
+        })
+    },
     renderAdmin: (req, res) => {
         res.render('admin/index');
     },
