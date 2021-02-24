@@ -15,7 +15,7 @@ module.exports = [
         .custom(value => {
         let result = admins.find(admin => admin.username === value.trim());
 
-        // verificar si el usuario esta registrado
+        // verificar si el usuario ya esta registrado
         if(result) {
             return false;
         } else {

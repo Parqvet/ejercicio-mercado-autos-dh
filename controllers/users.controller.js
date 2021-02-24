@@ -57,9 +57,19 @@ module.exports = {
         // buscar si existe el usuario
         let result = admins.find(admin => admin.username === username.trim());
 
+        // si el usuario está registrado
         if(result) {
             // se comparan contraseñas
             if(bcrypt.compareSync(pass.trim(), result.pass)) {
+
+                // una vez que se confirmó su autorizacion aplicamos session
+                // agregamos una propiedad al objeto session (userAdmin)
+                // almacenamos los datos del usuario
+                req.session.userAdmin = {
+                    id: result.id,
+                    username: result.username
+                }
+
                 return res.redirect('/admin');
             } else {
                 res.render('admin/login', {

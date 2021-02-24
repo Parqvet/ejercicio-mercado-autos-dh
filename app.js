@@ -1,5 +1,6 @@
 const express = require('express');
 const methodOverride = require('method-override');
+const session = require('express-session');
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 // agregar method-override
 app.use(methodOverride('_method'));
+app.use(session({
+    secret: 'secretkey'
+}))
 
 // router
 const indexRouter = require('./routes/index.router');
