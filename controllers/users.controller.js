@@ -52,7 +52,7 @@ module.exports = {
 
     },
     processLogin: (req, res) => {
-        const { username, pass } = req.body;
+        const { username, pass, recordar } = req.body;
 
         // buscar si existe el usuario
         let result = admins.find(admin => admin.username === username.trim());
@@ -70,6 +70,13 @@ module.exports = {
                     username: result.username
                 }
 
+                // crear cookie
+                if(recordar != 'undefined') {
+                    res.cookie('userAdmin', req.session.userAdmin, {
+                        maxAge: 1000 * 60
+                    })
+                }
+
                 return res.redirect('/admin');
             } else {
                 res.render('admin/login', {
@@ -85,6 +92,12 @@ module.exports = {
     logout: (req, res) => {
         // req.session.destroy();
         delete req.session.userAdmin;
+
+        if(req.cookies.userAdmin) {
+            res.cookie('userAdmin', '', {
+                maxAge: -1
+            })
+        }
         res.redirect('/');
     }
 }

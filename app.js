@@ -2,7 +2,9 @@ const express = require('express');
 
 const methodOverride = require('method-override');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const localsCheck = require('./middlewares/localsCheck');
+const cookieCheck = require('./middlewares/cookieCheck');
 
 const app = express();
 
@@ -17,9 +19,13 @@ app.use(express.json());
 // agregar method-override
 app.use(methodOverride('_method'));
 app.use(session({
-    secret: 'secretkey'
+    secret: 'secretkey',
+    resave: true,
+    saveUninitialized: true
 }))
+app.use(cookieParser());
 app.use(localsCheck);
+app.use(cookieCheck);
 
 
 // router
