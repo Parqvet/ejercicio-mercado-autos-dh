@@ -81,5 +81,10 @@ module.exports = {
                 error: 'Credenciales inválidas'
             })
         }
+    },
+    logout: (req, res) => {
+        // req.session.destroy();
+        delete req.session.userAdmin;
+        res.redirect('/');
     }
 }

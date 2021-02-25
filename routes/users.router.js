@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const { renderRegister, processRegister, renderLogin, processLogin } = require('../controllers/users.controller');
+const { renderRegister, processRegister, renderLogin, processLogin, logout } = require('../controllers/users.controller');
 
 // requerir middleware de validacion para registro de usuario
 const registerAdminValidator = require('../validations/registerAdminValidator');
@@ -16,5 +16,8 @@ router.post('/register', registerAdminValidator, processRegister);
 // renderizar y procesar el login
 router.get('/login', renderLogin);
 router.post('/login', loginAdminValidator, processLogin);
+
+// para cerrar sesión
+router.get('/logout', logout);
 
 module.exports = router;

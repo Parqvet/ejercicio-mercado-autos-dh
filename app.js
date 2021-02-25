@@ -1,6 +1,8 @@
 const express = require('express');
+
 const methodOverride = require('method-override');
 const session = require('express-session');
+const localsCheck = require('./middlewares/localsCheck');
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(methodOverride('_method'));
 app.use(session({
     secret: 'secretkey'
 }))
+app.use(localsCheck);
+
 
 // router
 const indexRouter = require('./routes/index.router');
